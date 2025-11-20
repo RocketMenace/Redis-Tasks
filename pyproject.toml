@@ -1,0 +1,13 @@
+[project]
+name = "redis-tasks"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "redis>=7.1.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.5",
+]
