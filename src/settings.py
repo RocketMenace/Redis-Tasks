@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from redis import ConnectionPool, Redis
 
 
 @dataclass(frozen=True, eq=False, kw_only=True)
@@ -7,9 +8,16 @@ class RedisSettings:
     port: int
     db: int
     decode_responses: bool
-    max_connections: int
 
 
-settings = RedisSettings(
-    host="localhost", port=5432, db=1, decode_responses=True, max_connections=20
-)
+def create_connection_pool(*, settings: RedisSettings) -> ConnectionPool:
+    return ConnectionPool(
+        host=settings.host,
+        port=settings.port,
+        db=settings.db,
+        decode_responses=settings.decode_responses,
+    )
+
+
+def get_cache_client(*, pool: ConnectionPool) -> Redis:
+    return Redis.from_pool(connection_pool=pool)
